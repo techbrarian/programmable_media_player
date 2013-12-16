@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Bengtson-Fu!!! 13 3 |\| ( ][ 5 () |\| - |= |_|!!! -->
+
+<!-- created by Jason Bengtson, MLIS, MA : Available under MIT open source license -->
+<!-- this general purpose, programmable media player was built for the Robert M. Bird Health Sciences Library-->
+<!--to use:send to the url with a question mark after the url proper. After the qm, enter your specs-->
+<!--first digit:1=video or 2=audio if you want it to loop then add lower case "a"-->
+<!--next add custom height for player in px (default is 200px)-->
+<!--the add"@" followed by filename (without extension). This is javascript, so it can't play anything that isn't locally hosted-->
+<!--place video/audio files on the web server . . . use multiple versions to cover browser incompatibilities-->
+<!--this player is set up for mpeg4, ogg, webm, mp3, and wav out of the box-->
+<!--example:this url is for a looping video with a 400px high player:http://library.ouhsc.edu/mediaplayer/mediautility.html?1a400@intro -->
+
+<style>
+.playit
+{
+display:block;
+margin-left:auto;
+margin-right:auto;
+border-width:10px;
+border-color:darkgray;
+border-style:solid;
+}
+
+
+</style>
+<title>Modular Player Utility</title>
+<script src="http://library.ouhsc.edu/js_ui/js/librarycombined.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+
+
+<video id="videoplayer" class="playit"
+	autoplay="autoplay"
+	controls="controls"
+	height=200px
+	loop="loop"
+	preload="preload"
+	width=auto>
+	<source id="sourcemp4" src="" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'> <!--must be first because of ipad bug-->
+	<source id="sourcem4v" src="" type="video/m4v">
+	<source id="sourceogg" src="" type='video/ogg; codecs="theora, vorbis"'>
+	<source id="sourcewebm" src="" type='video/webm; codecs="vp8, vorbis"'>
+	
+Sorry: your browser does not support HTML5 video content	
+</video>
+
+<!--simple audio player for simple applications; the webaudio api can be used for more sophisticated stuff-->
+<audio id="audioplayer" class="playit"
+	autoplay="autoplay"
+	controls="controls"
+	height=200px
+	loop="loop"
+	preload="auto"
+	width=auto>
+	<source id="audioogg" src="" type="audio/ogg">
+	<source id="audiowav" src="" type="audio/wav">
+	<source id="audiomp3" src="" type="audio/mp3">
+Sorry: your browser does not support HTML5 audio content	
+</audio>
+
+<script>
+//this is the javascript that makes the player work based upon input from the url
+var this_url=window.location.href;
+
+var locate=this_url.indexOf("?")+1;
+
+var instructions=this_url.slice(locate);
+var heightend=instructions.indexOf("@");
+var choose=instructions.slice(0,1);
+var loopit=instructions.slice(1,2);
+var sizeit=instructions.slice(2,heightend);
+var sourceit=instructions.slice(heightend+1);
+if (choose==1)
+{
+if (loopit!="a")
+{
+$("#videoplayer").removeAttr("loop");
+}
+$("#audioplayer").css("display","none");
+if (sizeit>0)
+{
+$("#videoplayer").attr("height",sizeit+"px");
+}
+$("#sourcemp4").attr("src",sourceit+".mp4");
+$("#sourcem4v").attr("src",sourceit+".m4v");
+$("#sourceogg").attr("src",sourceit+".ogg");
+$("#sourcewebm").attr("src",sourceit+".webm");
+
+}
+else if (choose==2)
+{
+if (loopit!="a")
+{
+$("#audioplayer").removeAttr("loop");
+}
+$("#videoplayer").css("display","none");
+$("#audioplayer").attr("height",sizeit+"px");
+$("#audiomp3").attr("src",sourceit+".mp3");
+$("#audioogg").attr("src",sourceit+".ogg");
+$("#audiowav").attr("src",sourceit+".wav");
+
+}
+else{
+
+$("#videoplayer").css("display","none");
+$("#audioplayer").css("display","none");
+window.location=document.referrer;
+
+
+}
+
+</script>
+
+
+
+</body>
+</html>
